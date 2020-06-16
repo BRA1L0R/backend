@@ -16,9 +16,9 @@
       "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "smtphost": "mail.brailor.me",
+        "smtphost": "mail.smtphost.io",
         "smtpport": "587",
-        "smtpfrom": "kiwi@brailor.me",
+        "smtpfrom": "kiwi@smtphost.io",
         "smtpkey": "kiwitest",
         "jwtkey": "this string has to be veeeeeeery long :)",
         "apihost": "https://localhost:5001"

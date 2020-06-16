@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using BeetleX.Redis;
+using KiwiRest.Middlewares;
+using KiwiRest.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -18,6 +22,7 @@ namespace KiwiRest
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+			UserDatabase.Initialize();
 		}
 
 		public IConfiguration Configuration { get; }
@@ -41,7 +46,7 @@ namespace KiwiRest
 			app.UseRouting();
 
 			app.UseAuthorization();
-
+			app.UseMiddleware<JwtMiddleware>();
 			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 		}
 	}
