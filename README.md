@@ -9,6 +9,7 @@ Basically, having an account means having a token key, that can be used to gathe
 that can access the DB connected to the account.
 
 Users are stored in a PostgreSQL DB and their ID (which is an auto-incremental value) is the Redis DB ID.
+
 _NOTE: needs better explaination_
 
 ## Environment variables
