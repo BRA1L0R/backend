@@ -4,7 +4,7 @@ namespace KiwiRest.Models
 	{
 		public static readonly Plan Basic = new Plan
 		{
-			MaxEntries = 1,
+			MaxEntries = 1000,
 			Name = "plan.basic"
 		};
 
@@ -14,7 +14,7 @@ namespace KiwiRest.Models
 			Name = "plan.premium"
 		};
 
-		public static Plan GetPlanByName(string name)
+		public static Plan? GetPlanByName(string name)
 		{
 			switch (name.ToLower())
 			{
@@ -23,11 +23,10 @@ namespace KiwiRest.Models
 				case "plan.premium":
 					return Premium;
 				default:
-					return Basic;
+					return null;
 			}
 		}
 	}
-
 	public struct Plan
 	{
 		public string Name;

@@ -15,7 +15,7 @@ namespace KiwiRest.Models
 		public Plan plan;
 		public bool confirmed;
 
-		public ClaimsPrincipal GenerateClaimsPrincipal(string authenticationType)
+		public ClaimsPrincipal ClaimsPrincipal(string authenticationType)
 		{
 			ClaimsIdentity userIdentity = new ClaimsIdentity(authenticationType);
 			

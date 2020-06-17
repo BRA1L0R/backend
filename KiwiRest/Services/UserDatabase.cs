@@ -24,7 +24,7 @@ namespace KiwiRest.Services
 			dr.Read();
 			
 			if (!dr.HasRows) { dr.Close(); return null;}
-			User user = new User()
+			User user = new User
 			{
 				ID = dr.GetInt32("ID"),
 				username = dr.GetString("username"),
@@ -33,7 +33,7 @@ namespace KiwiRest.Services
 				registration_timestamp = dr.GetDateTime("registration_timestamp"),
 				date_of_birth = dr.GetDateTime("date_of_birth"),
 				role = dr.GetString("role"),
-				plan = Plans.GetPlanByName(dr.GetString("plan")),
+				plan = Plans.GetPlanByName(dr.GetString("plan")) ?? throw new Exception("Unknown plan type"),
 				confirmed = dr.GetBoolean("confirmed")
 			};
 			

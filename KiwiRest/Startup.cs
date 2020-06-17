@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BeetleX.Redis;
@@ -23,6 +24,7 @@ namespace KiwiRest
 		{
 			Configuration = configuration;
 			UserDatabase.Initialize();
+			Jwt.SetKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("jwtkey") ?? throw new Exception("EMPTY_KEY_JWT")));
 		}
 
 		public IConfiguration Configuration { get; }

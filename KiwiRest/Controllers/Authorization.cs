@@ -41,7 +41,7 @@ namespace KiwiRest.Controllers
 				role = Roles.User
 			};
 
-			if (!MailService.SendConfirmation(user, user.GenerateClaimsPrincipal(JwtScope.Registration).Identity as ClaimsIdentity)) return Problem("Internal server error", null, 500);
+			if (!MailService.SendConfirmation(user, user.ClaimsPrincipal(JwtScope.Registration).Identity as ClaimsIdentity)) return Problem("Internal server error", null, 500);
 			UserDatabase.RegisterUser(user);
 			return Ok();
 		}
@@ -73,7 +73,7 @@ namespace KiwiRest.Controllers
 			if (user.password != password) return Unauthorized("Incorrect password");
 			if (!user.confirmed) return Problem("User has not confirmed his account yet");
 
-			HttpContext.User = user.GenerateClaimsPrincipal(JwtScope.UserLogin);
+			HttpContext.User = user.ClaimsPrincipal(JwtScope.UserLogin);
 			return NoContent();
 
 			// return Ok(new

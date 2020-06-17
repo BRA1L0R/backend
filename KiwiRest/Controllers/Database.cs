@@ -78,7 +78,7 @@ namespace KiwiRest.Controllers
 			
 			(RedisDB db, int entries) = await GetDb(userId);
 
-			var plan = Plans.GetPlanByName(HttpContext.User.FindFirst(claim => claim.Type == ClaimTypes.UserData).Value);
+			var plan = Plans.GetPlanByName(HttpContext.User.FindFirst(claim => claim.Type == ClaimTypes.UserData).Value) ?? throw new Exception("Unknown plan type");
 			if (plan.MaxEntries <= entries && await db.Exists(key) == 0) return Conflict("Too many entries for current plan");
 
 			await db.Set(key, value);
