@@ -91,7 +91,7 @@ namespace KiwiRest.Controllers
 			ClaimsIdentity identity = new ClaimsIdentity(HttpContext.User.Claims, JwtScope.DatabaseAccess);
 			identity.RemoveClaim((from claim in identity.Claims where claim.Type == ClaimTypes.Authentication select claim).Single());	// remove the precedent signing from the claims
 			
-			return Ok(Jwt.Sign(identity, Int32.MaxValue));
+			return Ok(Jwt.Sign(identity, 43200)); // 43200 = 30 days
 		}
 	}
 }

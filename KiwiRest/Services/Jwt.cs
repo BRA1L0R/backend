@@ -39,7 +39,7 @@ namespace KiwiRest.Services
 			return serializedToken;
 		}
 
-		public static bool Validate(string token, out ClaimsIdentity claimsIdentity)
+		public static bool Validate(string token, out ClaimsIdentity claimsIdentity, bool validateLifetime = true)
 		{
 			claimsIdentity = null;
 			var tokenHandler = new JwtSecurityTokenHandler();
@@ -48,7 +48,7 @@ namespace KiwiRest.Services
 			{
 				var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
 				{
-					ValidateLifetime = true,
+					ValidateLifetime = validateLifetime,
 					ValidateIssuerSigningKey = true,
 					ValidateIssuer = false,
 					ValidateAudience = false,

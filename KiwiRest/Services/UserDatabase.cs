@@ -62,7 +62,7 @@ namespace KiwiRest.Services
 			command.Parameters.AddWithValue("reg_ts", user.registration_timestamp);
 			command.Parameters.AddWithValue("dob", user.date_of_birth);
 			command.Parameters.AddWithValue("role", user.role);
-			command.Parameters.AddWithValue("plan", user.plan);
+			command.Parameters.AddWithValue("plan", user.plan.Name);
 			command.Parameters.AddWithValue("cnf", user.confirmed);
 
 			return command.ExecuteNonQuery() != 0;
