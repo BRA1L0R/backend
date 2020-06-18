@@ -4,7 +4,12 @@ the code
 
 ---
 
-## Working Principals
+## What is this project about?
+Kiwi is a serverless key-value database that can be accessed through HTTP requests to an API server (this repository).
+It's gonna be free up to a certain extent, server RAM is not free. A free subscription has around 10000 max keys, but if your project requires more you can always buy the Premium plan which has max 50000 keys. If you think it's still not enough you can get in touch to my email to have a custom plan made just for you.
+The name `Kiwi` comes from the words "Key" and "Value", the first letters are pronounced "Key" and "Vi", so basically "Kiwi"
+
+## How does it work?
 Basically, having an account means having a token key, that can be used to gather an API key
 that can access the DB connected to the account.
 
@@ -13,6 +18,7 @@ Users are stored in a PostgreSQL DB and their ID (which is an auto-incremental v
 _NOTE: needs better explaination_
 
 ## Environment variables
+Those environment variables _NEED_ to be set in order to have a functioning version of the backend for yourself
 | Key | Example value | Description |
 |-|-|-|
 | apihost | https://localhost:5001/ | The API endpoint URL |
