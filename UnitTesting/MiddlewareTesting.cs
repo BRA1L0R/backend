@@ -44,14 +44,14 @@ namespace UnitTesting
 				username = "user"
 			};
 
-			ClaimsPrincipal userPrincipal = testUser.ClaimsPrincipal(JwtScope.UserLogin);
+			ClaimsPrincipal userPrincipal = testUser.ClaimsPrincipal(TokenScope.UserLogin);
 			context.Request.Headers.Add("Authorization", "Bearer " + Jwt.Sign((ClaimsIdentity) userPrincipal.Identity));
 
 			await middleware.Invoke(context);
 			
 			Assert.IsTrue(context.User.Claims.Any(), "Are there any claims when the authentication header is present?");
 			Assert.IsNotNull(context.User.Identity.AuthenticationType, "Is the authenticationtype no null when the authentication header is present?");
-			Assert.AreEqual(context.User.Identity.AuthenticationType, JwtScope.UserLogin,
+			Assert.AreEqual(context.User.Identity.AuthenticationType, TokenScope.UserLogin,
 				"Is the AuthenticationType the same as the one used to sign the Jwt token?");
 		}
 	}

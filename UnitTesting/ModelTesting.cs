@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace UnitTesting
 {
-	public class Tests
+	public class ModelTests
 	{
 		private User _testUser;
 		
@@ -30,7 +30,7 @@ namespace UnitTesting
 		[Test]
 		public void TestUserModel()
 		{
-			ClaimsPrincipal userClaimsPrincipal = _testUser.ClaimsPrincipal(JwtScope.UserLogin);
+			ClaimsPrincipal userClaimsPrincipal = _testUser.ClaimsPrincipal(TokenScope.UserLogin);
 			
 			Assert.IsTrue(userClaimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value == _testUser.ID + "", "Is the ID in the Claims?");
 			Assert.IsTrue(userClaimsPrincipal.FindFirst(ClaimTypes.Name).Value == _testUser.username, "Is the username in the Claims?");
