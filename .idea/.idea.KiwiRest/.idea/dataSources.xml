@@ -7,5 +7,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://192.168.1.12:5432/postgres</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="kiwidb@192.168.1.12" uuid="bb4953c0-36ab-4bd1-bb54-c539e7de1185">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://192.168.1.12:5432/kiwidb</jdbc-url>
+    </data-source>
   </component>
 </project>

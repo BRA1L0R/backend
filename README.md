@@ -1,3 +1,9 @@
+![](assets/full-logo.svg)
+
+![https://img.shields.io/github/last-commit/Kiwi-DB/backend/master?label=Last%20commit](https://img.shields.io/apm/l/vim-mode?label=License)
+![](https://img.shields.io/github/last-commit/Kiwi-DB/backend/master?label=Last%20commit)
+
+
 # Kiwi RestAPI (In progress...)
 Documentation is still incomplete, it may need various reviews due to the constant changes to
 the code
