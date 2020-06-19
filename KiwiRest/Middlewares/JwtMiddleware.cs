@@ -20,6 +20,8 @@ namespace KiwiRest.Middlewares
 		
 		public async Task Invoke(HttpContext context)
 		{
+			if (context.Request.Path.StartsWithSegments("/db", StringComparison.OrdinalIgnoreCase)) goto Next; // MapWhen didn't work for some reason
+
 			context.Response.OnStarting(() =>
 			{
 				// Generate new JWT if the user was already authenticated

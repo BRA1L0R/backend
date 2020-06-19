@@ -39,7 +39,7 @@ namespace KiwiRest.Controllers
 			
 			if (!HttpContext.User.Identity.IsAuthenticated)
 				return Unauthorized("Invalid JWT token");
-			if (HttpContext.User.Identity.AuthenticationType != JwtScope.DatabaseAccess)
+			if (HttpContext.User.Identity.AuthenticationType != TokenScope.DatabaseAccess)
 				return Unauthorized("Wrong token scope");
 
 			userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);

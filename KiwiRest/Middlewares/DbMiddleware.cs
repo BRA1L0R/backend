@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using KiwiRest.Models;
@@ -6,17 +7,19 @@ using Microsoft.AspNetCore.Http;
 
 namespace KiwiRest.Middlewares
 {
-	public class ApiMiddleware
+	public class DbMiddleware
 	{
 		private readonly RequestDelegate next;
 
-		public ApiMiddleware(RequestDelegate next)
+		public DbMiddleware(RequestDelegate next)
 		{
 			this.next = next;
 		}
 
 		public async Task Invoke(HttpContext context)
 		{
+			if (!context.Request.Path.StartsWithSegments("/db", StringComparison.OrdinalIgnoreCase)) goto Next;
+
 			var authHeader = context.Request.Headers["Authorization"];
 			if (authHeader.Count < 1) goto Next;
 
@@ -27,7 +30,7 @@ namespace KiwiRest.Middlewares
 			User user = UserDatabase.GetUser(token);
 			
 			if (user == null) goto Next;
-			ClaimsPrincipal claimsPrincipal = user.ClaimsPrincipal();
+			ClaimsPrincipal claimsPrincipal = user.ClaimsPrincipal(TokenScope.DatabaseAccess);
 			context.User = claimsPrincipal;
 			
 			Next:

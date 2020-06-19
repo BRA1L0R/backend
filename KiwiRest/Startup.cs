@@ -49,6 +49,8 @@ namespace KiwiRest
 
 			app.UseAuthorization();
 			app.UseMiddleware<JwtMiddleware>();
+			app.UseMiddleware<DbMiddleware>();
+
 			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 		}
 	}

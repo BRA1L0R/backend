@@ -28,6 +28,8 @@ namespace KiwiRest.Controllers
 			username = StringSanitization.Sanitize(username);
 			email = StringSanitization.Sanitize(email);
 			if (UserDatabase.GetUser(email, username) != null) return Conflict("Email / username already registered");
+			
+			int apiTokenLength = Int32.Parse(Environment.GetEnvironmentVariable("apitokenlength") ?? throw new Exception("apitokenlength_ENV_VAR_NULL"));
 
 			User user = new User
 			{
@@ -38,10 +40,11 @@ namespace KiwiRest.Controllers
 				date_of_birth = birthday,
 				plan = Plans.Basic,
 				registration_timestamp = DateTime.Now,
-				role = Roles.User
+				role = Roles.User,
+				api_token = StringGeneration.RandomString(apiTokenLength) // Generate a random api token which will be used to access the kew value database
 			};
 
-			if (!MailService.SendConfirmation(user, user.ClaimsPrincipal(JwtScope.Registration).Identity as ClaimsIdentity)) return Problem("Internal server error", null, 500);
+			if (!MailService.SendConfirmation(user, user.ClaimsPrincipal(TokenScope.Registration).Identity as ClaimsIdentity)) return Problem("Internal server error", null, 500);
 			UserDatabase.RegisterUser(user);
 			return Ok();
 		}
@@ -51,7 +54,7 @@ namespace KiwiRest.Controllers
 		{ 
 			var tokenValidation = Jwt.Validate(token, out ClaimsIdentity claimsIdentity);
 			if (!tokenValidation) return Unauthorized("Token invalid or expired");
-			if (claimsIdentity.AuthenticationType != JwtScope.Registration)
+			if (claimsIdentity.AuthenticationType != TokenScope.Registration)
 				return Unauthorized("JWT was generated for another scope");
 			
 			var username = claimsIdentity.FindFirst(claim => claim.Type == ClaimTypes.Name).Value;
@@ -67,13 +70,13 @@ namespace KiwiRest.Controllers
 			email = StringSanitization.Sanitize(email);
 			password = SHA512.Hash(password);
 
-			User user = UserDatabase.GetUser(email);
+			User user = UserDatabase.GetUser(email, null);
 			if (HttpContext.User.Identity.IsAuthenticated) return Unauthorized("User already signed in");
 			if (user == null) return NotFound("Email not found in database");
 			if (user.password != password) return Unauthorized("Incorrect password");
 			if (!user.confirmed) return Problem("User has not confirmed his account yet");
 
-			HttpContext.User = user.ClaimsPrincipal(JwtScope.UserLogin);
+			HttpContext.User = user.ClaimsPrincipal(TokenScope.UserLogin);
 			return NoContent();
 
 			// return Ok(new
@@ -85,13 +88,10 @@ namespace KiwiRest.Controllers
 		[HttpGet("/api/getApiKey")]
 		public IActionResult GetApiKey()
 		{
-			if (HttpContext.User.Identity.AuthenticationType != JwtScope.UserLogin)
+			if (HttpContext.User.Identity.AuthenticationType != TokenScope.UserLogin)
 				return Unauthorized();
-			
-			ClaimsIdentity identity = new ClaimsIdentity(HttpContext.User.Claims, JwtScope.DatabaseAccess);
-			identity.RemoveClaim((from claim in identity.Claims where claim.Type == ClaimTypes.Authentication select claim).Single());	// remove the precedent signing from the claims
-			
-			return Ok(Jwt.Sign(identity, 43200)); // 43200 = 30 days
+
+			return Ok(UserDatabase.GetApiToken(Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)));
 		}
 	}
 }

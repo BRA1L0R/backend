@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace KiwiRest.Models
 {
@@ -14,8 +15,9 @@ namespace KiwiRest.Models
 		public string role;
 		public Plan plan;
 		public bool confirmed;
+		public string api_token;
 
-		public ClaimsPrincipal ClaimsPrincipal(string authenticationType)
+		public ClaimsPrincipal ClaimsPrincipal(string authenticationType = "")
 		{
 			ClaimsIdentity userIdentity = new ClaimsIdentity(authenticationType);
 			
